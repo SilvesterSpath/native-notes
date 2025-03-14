@@ -13,10 +13,19 @@ const RootLayout = () => {
           },
           headerTintColor: 'white',
           headerTitleStyle: {
+            fontSize: 25,
             fontWeight: 'bold',
           },
+          contentStyle: {
+            paddingHorizontal: 10,
+            paddingTop: 10,
+            backgroundColor: 'white',
+          },
+          headerTitleAlign: 'center', // ✅ This centers the title
         }}
-      />
+      >
+        <Stack.Screen name='index' options={{ title: 'Home' }} />
+      </Stack>
     </>
   );
 };
