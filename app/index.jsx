@@ -3,6 +3,8 @@ import PostImage from '../assets/images/post-it.png';
 import { useRouter } from 'expo-router';
 
 const HomeScreen = () => {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
       <Image source={PostImage} style={{ width: 200, height: 200 }} />
@@ -12,7 +14,7 @@ const HomeScreen = () => {
       </Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => useRouter().push('notes')}
+        onPress={() => router.push('notes')}
       >
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
