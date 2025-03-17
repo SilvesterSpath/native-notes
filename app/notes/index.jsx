@@ -1,12 +1,24 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 
 const NotesScreen = () => {
+  const [notes, setNotes] = useState([
+    { id: 1, title: 'First Note', content: 'This is the first note' },
+    { id: 2, title: 'Second Note', content: 'This is the second note' },
+    { id: 3, title: 'Third Note', content: 'This is the third note' },
+  ]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Notes</Text>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>+ New Note</Text>
-      </TouchableOpacity>
+      <FlatList
+        data={notes}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.noteItem}>
+            <Text style={styles.noteText}>{item.title}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 };
@@ -14,26 +26,20 @@ const NotesScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f8f9fa',
+    padding: 20,
+    backgroundColor: '#fff',
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
+  noteItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#f5f5f5',
+    padding: 15,
+    borderRadius: 5,
+    marginVertical: 5,
   },
-  button: {
-    backgroundColor: 'tomato',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+  noteText: {
+    fontSize: 18,
   },
 });
+
 export default NotesScreen;
