@@ -8,19 +8,31 @@ import {
   Modal,
   TextInput,
 } from 'react-native';
+import NoteItem from '../../components/NoteItem';
 
 const NotesScreen = () => {
   const [notes, setNotes] = useState([
-    { id: 1, title: 'First Note', content: 'This is the first note' },
-    { id: 2, title: 'Second Note', content: 'This is the second note' },
-    { id: 3, title: 'Third Note', content: 'This is the third note' },
+    { id: 1, title: 'First Note', text: 'This is the first note' },
+    { id: 2, title: 'Second Note', text: 'This is the second note' },
+    { id: 3, title: 'Third Note', text: 'This is the third note' },
   ]);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [newNote, setNewNote] = useState({ title: '', content: '' });
+  const [newNote, setNewNote] = useState({ title: '', text: '' });
 
+  // Function to add a new note
   const addNote = () => {
-    console.log('addNote called');
+    if (newNote.trim() === '') return;
+    setNotes((prevNotes) => [
+      ...prevNotes,
+      {
+        id: Date.now().toString(),
+
+        text: newNote,
+      },
+    ]);
+    setNewNote('');
+    setModalVisible(false);
   };
 
   return (
@@ -28,11 +40,7 @@ const NotesScreen = () => {
       <FlatList
         data={notes}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.noteItem}>
-            <Text style={styles.noteText}>{item.title}</Text>
-          </View>
-        )}
+        renderItem={({ item }) => <NoteItem item={item} />}
       />
       <TouchableOpacity
         style={styles.addButton}
@@ -124,9 +132,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    textAlign: 'center',
   },
   modalInput: {
-    height: 100,
+    height: 50,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
