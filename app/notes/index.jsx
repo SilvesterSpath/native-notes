@@ -8,7 +8,8 @@ import {
   Modal,
   TextInput,
 } from 'react-native';
-import NoteItem from '../../components/NoteItem';
+
+import NoteList from '../../components/NoteList';
 
 const NotesScreen = () => {
   const [notes, setNotes] = useState([
@@ -37,11 +38,7 @@ const NotesScreen = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={notes}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <NoteItem item={item} />}
-      />
+      <NoteList notes={notes} />
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => setModalVisible(true)}
