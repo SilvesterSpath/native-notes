@@ -1,15 +1,8 @@
 import { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Modal,
-  TextInput,
-} from 'react-native';
 
 import NoteList from '../../components/NoteList';
+import AddNoteModal from '../../components/AddNoteModal';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
 const NotesScreen = () => {
   const [notes, setNotes] = useState([
@@ -19,7 +12,7 @@ const NotesScreen = () => {
   ]);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [newNote, setNewNote] = useState({ title: '', text: '' });
+  const [newNote, setNewNote] = useState('');
 
   // Function to add a new note
   const addNote = () => {
@@ -28,7 +21,6 @@ const NotesScreen = () => {
       ...prevNotes,
       {
         id: Date.now().toString(),
-
         text: newNote,
       },
     ]);
@@ -46,37 +38,13 @@ const NotesScreen = () => {
         <Text style={styles.addButtonText}>+ Add Note</Text>
       </TouchableOpacity>
 
-      {/* Modal */}
-      <Modal
-        visible={modalVisible}
-        animationType='slide'
-        transparent={true}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Add a New Note</Text>
-            <TextInput
-              style={styles.modalInput}
-              placeholder='Enter note..'
-              placeholderTextCol='#aaa'
-              value={newNote}
-              onChangeText={setNewNote}
-            />
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => setModalVisible(false)}
-              >
-                <Text style={styles.cancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.saveButton} onPress={addNote}>
-                <Text style={styles.saveButtonText}>Save</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <AddNoteModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        newNote={newNote}
+        setNewNote={setNewNote}
+        addNote={addNote}
+      />
     </View>
   );
 };
