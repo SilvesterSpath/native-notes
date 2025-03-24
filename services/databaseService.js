@@ -28,6 +28,7 @@ const databaseService = {
           },
         }
       );
+      console.log('📥 Fetched notes from Appwrite:', res);
 
       const json = await res.json();
       console.log('✅ Fallback fetch result:', json);

@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const NoteItem = ({ note, onDelete }) => {
+  console.log('🪪 Rendering note:', note);
   return (
     <View style={styles.noteItem}>
       <Text style={styles.noteText}>{note.text}</Text>

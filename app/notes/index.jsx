@@ -18,7 +18,8 @@ const NotesScreen = () => {
     setLoading(true);
     try {
       const response = await noteService.getNotes();
-      console.log('response:', response);
+
+      console.log('📥 Fetched notes from Appwrite:', response.data);
 
       if (response.error) {
         setError(response.error);
@@ -51,8 +52,8 @@ const NotesScreen = () => {
       setError(response.error);
       Alert.alert('Error', response.error);
     } else {
-      fetchNotes();
-      setNotes([...notes, response.data]);
+      await fetchNotes();
+
       setError(null);
     }
 
