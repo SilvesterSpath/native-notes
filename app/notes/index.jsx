@@ -35,7 +35,7 @@ const NotesScreen = () => {
     setNotes((prevNotes) => [
       ...prevNotes,
       {
-        id: Date.now().toString(),
+        $id: Date.now().toString(),
         text: newNote,
       },
     ]);
