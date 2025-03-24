@@ -5,6 +5,8 @@ import { ID } from 'react-native-appwrite';
 const dbId = process.env.EXPO_PUBLIC_APPWRITE_DB_ID;
 const collectionId = process.env.EXPO_PUBLIC_APPWRITE_COL_NOTES_ID;
 
+console.log(dbId, collectionId);
+
 const noteService = {
   // Get Notes
   async getNotes() {
@@ -29,8 +31,8 @@ const noteService = {
     const response = await databaseService.createDocument(
       dbId,
       collectionId,
-      data,
-      ID.unique()
+      ID.unique(),
+      data
     );
 
     if (response?.error) {

@@ -13,13 +13,13 @@ const databaseService = {
   },
 
   // Create Document
-  async createDocument(dbId, collectionId, data, id = null) {
+  async createDocument(dbId, collectionId, documentId, data) {
     try {
       const response = await database.createDocument(
         dbId,
         collectionId,
-        data,
-        id || undefined
+        documentId,
+        data
       );
       return response;
     } catch (error) {

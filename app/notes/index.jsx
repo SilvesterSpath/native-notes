@@ -30,15 +30,18 @@ const NotesScreen = () => {
   }, []);
 
   // Function to add a new note
-  const addNote = () => {
+  const addNote = async () => {
     if (newNote.trim() === '') return;
-    setNotes((prevNotes) => [
-      ...prevNotes,
-      {
-        $id: Date.now().toString(),
-        text: newNote,
-      },
-    ]);
+
+    const response = await noteService.addNote(newNote);
+    if (response.error) {
+      setError(response.error);
+      Alert.alert('Error', response.error);
+    } else {
+      setNotes([...notes, response.data]);
+      setError(null);
+    }
+
     setNewNote('');
     setModalVisible(false);
   };
