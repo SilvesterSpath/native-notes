@@ -3,8 +3,10 @@ import { database } from './appwrite';
 const databaseService = {
   // List Documents
   async getDocuments(dbId, collectionId) {
+    console.log('DatabaseService.getDocuments...');
     try {
       const response = await database.listDocuments(dbId, collectionId);
+      console.log('Raw Appwrite response:', response);
       return response.documents || [];
     } catch (error) {
       console.error('Error fetching documents:', error.message);

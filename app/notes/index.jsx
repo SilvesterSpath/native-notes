@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NoteList from '../../components/NoteList';
 import AddNoteModal from '../../components/AddNoteModal';
 import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
 import noteService from '../../services/noteService';
-import { ActivityIndicator } from 'react-native-web';
+import { ActivityIndicator } from 'react-native';
 
 const NotesScreen = () => {
   const [notes, setNotes] = useState([]);
@@ -14,19 +14,28 @@ const NotesScreen = () => {
 
   // Function to fetch notes
   const fetchNotes = async () => {
+    console.log('Fetching notes...');
     setLoading(true);
-    const response = await noteService.getNotes();
-    if (response.error) {
-      setError(response.error);
-      Alert.alert('Error', response.error);
-    } else {
-      setNotes(response.data);
-      setError(null);
+    try {
+      const response = await noteService.getNotes();
+      console.log('response:', response);
+
+      if (response.error) {
+        setError(response.error);
+        Alert.alert('Error', response.error);
+      } else {
+        setNotes(response.data);
+        setError(null);
+      }
+    } catch (err) {
+      console.error('Unexpected error in fetchNotes:', err);
+      setError('Unexpected error');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  useState(() => {
+  useEffect(() => {
     fetchNotes();
   }, []);
 
@@ -47,6 +56,30 @@ const NotesScreen = () => {
     setModalVisible(false);
   };
 
+  // Function to delete a note
+  const deleteNote = async (noteId) => {
+    Alert.alert('Delete Note', 'Are you sure you want to delete this note?', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          const response = await noteService.deleteNote(noteId);
+          if (response.error) {
+            setError(response.error);
+            Alert.alert('Error', response.error);
+          } else {
+            setNotes(notes.filter((note) => note.$id !== noteId));
+            setError(null);
+          }
+        },
+      },
+    ]);
+  };
+
   return (
     <View style={styles.container}>
       {loading ? (
@@ -54,7 +87,7 @@ const NotesScreen = () => {
       ) : error ? (
         <Text style={styles.errorText}>{error}</Text>
       ) : (
-        <NoteList notes={notes} />
+        <NoteList notes={notes} onDelete={deleteNote} />
       )}
 
       <TouchableOpacity

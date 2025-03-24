@@ -10,12 +10,18 @@ console.log(dbId, collectionId);
 const noteService = {
   // Get Notes
   async getNotes() {
-    const response = await databaseService.getDocuments(dbId, collectionId);
-    if (response.error) {
-      return { error: response.error };
+    console.log('Calling databaseService.getDocuments...');
+    try {
+      const response = await databaseService.getDocuments(dbId, collectionId);
+      console.log('Raw Appwrite response:', response);
+      if (response.error) {
+        return { error: response.error };
+      }
+      return { data: response };
+    } catch (err) {
+      console.error('Error in getNotes:', err);
+      return { error: err.message || 'Unknown error' };
     }
-
-    return { data: response };
   },
 
   // Add New Note
