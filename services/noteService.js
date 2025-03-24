@@ -15,6 +15,30 @@ const noteService = {
 
     return { data: response };
   },
+
+  // Add New Note
+  async addNote(note) {
+    if (!note) {
+      return { error: 'Note is required' };
+    }
+    const data = {
+      text: note,
+      createdAt: new Date().toISOString(),
+    };
+
+    const response = await databaseService.createDocument(
+      dbId,
+      collectionId,
+      data,
+      ID.unique()
+    );
+
+    if (response?.error) {
+      return { error: response.error };
+    }
+
+    return { data: response };
+  },
 };
 
 export default noteService;
