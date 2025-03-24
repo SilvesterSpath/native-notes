@@ -24,6 +24,9 @@ const NotesScreen = () => {
         setError(response.error);
         Alert.alert('Error', response.error);
       } else {
+        if (response.data.length === 0) {
+          console.log('⚠️ No visible notes. Permissions may be missing.');
+        }
         setNotes(response.data);
         setError(null);
       }
@@ -35,9 +38,9 @@ const NotesScreen = () => {
     }
   };
 
-  useEffect(() => {
+  /*   useEffect(() => {
     fetchNotes();
-  }, []);
+  }, []); */
 
   // Function to add a new note
   const addNote = async () => {
@@ -48,6 +51,7 @@ const NotesScreen = () => {
       setError(response.error);
       Alert.alert('Error', response.error);
     } else {
+      fetchNotes();
       setNotes([...notes, response.data]);
       setError(null);
     }
@@ -89,6 +93,9 @@ const NotesScreen = () => {
       ) : (
         <NoteList notes={notes} onDelete={deleteNote} />
       )}
+      <TouchableOpacity style={styles.refreshButton} onPress={fetchNotes}>
+        <Text style={styles.refreshButtonText}>🔄 Refresh Notes</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.addButton}
@@ -188,6 +195,19 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
     maringBottom: 10,
+  },
+  refreshButton: {
+    backgroundColor: '#28a745',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+
+  refreshButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
